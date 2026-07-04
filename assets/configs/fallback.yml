@@ -1,0 +1,31 @@
+# 汉字
+-
+  font-size: 10
+  dir-from: boutique-bitmap/4E00-9FFF CJK Unified Ideographs
+  dir-to: common
+  flavor: zh_hk,zh_tw,zh_tr
+-
+  font-size: 10
+  dir-from: galmuri/4E00-9FFF CJK Unified Ideographs
+  dir-to: common
+  flavor: ko
+-
+  font-size: 12
+  dir-from: cubic-11/4E00-9FFF CJK Unified Ideographs
+  dir-to: common
+  flavor: zh_hk,zh_tw,zh_tr
+-
+  font-size: 12
+  dir-from: galmuri/4E00-9FFF CJK Unified Ideographs
+  dir-to: common
+  flavor: ko
+
+# 谚文
+-
+  font-size: 10
+  dir-from: galmuri/AC00-D7AF Hangul Syllables
+  dir-to: common
+-
+  font-size: 12
+  dir-from: galmuri/AC00-D7AF Hangul Syllables
+  dir-to: common

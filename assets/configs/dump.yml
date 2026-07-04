@@ -1,0 +1,24 @@
+boutique-bitmap-9x9:
+  -
+    font-file-name: BoutiqueBitmap9x9.ttf
+    dump-dir-name: boutique-bitmap
+    font-size: 10
+    rasterize-offset-y: 1
+cubic-11:
+  -
+    font-file-name: Cubic_11.woff2
+    dump-dir-name: cubic-11
+    font-size: 12
+    rasterize-offset-x: -1
+    rasterize-offset-y: 1
+galmuri:
+  -
+    font-file-name: Galmuri9.ttf
+    dump-dir-name: galmuri
+    font-size: 10
+    rasterize-offset-y: 1
+  -
+    font-file-name: Galmuri11.ttf
+    dump-dir-name: galmuri
+    font-size: 12
+    rasterize-offset-y: 1
