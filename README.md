@@ -40,9 +40,9 @@
 
 | 版本 | 对应 | 字号 |
 |---|---|---|
-| Fusion Poke Pixel Normal | Power Green | 29 |
-| Fusion Poke Pixel Narrow | Power Green Narrow | 29 |
-| Fusion Poke Pixel Small | Power Green Small | 25 |
+| Fusion Poke Pixel Normal | Power Green | 13px |
+| Fusion Poke Pixel Narrow | Power Green Narrow | 13px |
+| Fusion Poke Pixel Small | Power Green Small | 11px |
 
 对于多国语，请使用相应的版本：
 
@@ -78,6 +78,25 @@ end
 ```
 
 实际上，对于多语言支持，通常需要添加额外的逻辑来实现根据不同语言启用不同的字体，这里不做详细说明。
+
+## 点对点栅格化计算公式
+
+游戏的字体渲染引擎有些不太清楚的细节。
+
+如果需要在游戏中能够点对点的渲染字体，请尝试如下计算公式：
+
+```text
+游戏中设置的字号 = (字体字号 + 1) * 显示倍数 + 1
+```
+
+目前游戏使用 2x 显示字体，实际计算如下：
+
+```text
+FONT_SIZE = (13 + 1) * 2 + 1 = 29
+SMALL_FONT_SIZE = (11 + 1) * 2 + 1 = 25
+```
+
+上述公式只是推理出来的，具体原理不详。
 
 ## 程序依赖
 
