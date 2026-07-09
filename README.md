@@ -6,13 +6,11 @@
 
 这是一个为同人游戏 [「宝可梦无限融合 / Pokémon Infinite Fusion」](https://discord.gg/infinitefusion) 定制的字体项目。
 
-本字体基于 [「缝合像素字体」](https://github.com/TakWolf/fusion-pixel-font) 进行修改，目标是解决游戏中简体中文语言的显示问题。
+设计上用于替换游戏的默认字体，以提供更好的显示效果。字符范围支持泛拉丁和泛中日韩语言，可用于游戏大部分多国语的字体解决方案。
 
-尽管为简体中文而创建，但理论上该字体支持泛拉丁和泛中日韩语言，可以作为该游戏大部分多国语的字体解决方案，而且可能比游戏默认字体更好。
+本项目构建修改自 [「缝合像素字体」](https://github.com/TakWolf/fusion-pixel-font) 项目，并以 [「无限融合2：丰缘 / Infinite Fusion 2: Hoenn」](https://github.com/infinitefusion/infinitefusion-hoenn-public) 作为适配目标。
 
-本字体主要基于 [「无限融合2：丰缘 / Infinite Fusion 2: Hoenn」](https://github.com/infinitefusion/infinitefusion-hoenn-public) 进行适配和测试。
-
-本字体衍生自「Fusion Pixel Font」，因此字体名中带有「Fusion」单词。这只是一个巧合，和游戏名中的「Fusion」没有直接关系。
+由于衍生自「Fusion Pixel Font」字体，因此字体名中带有「Fusion」单词。这只是一个巧合，和游戏名中的「Fusion」没有直接关系。
 
 > [!WARNING]
 > 
@@ -30,21 +28,22 @@
 
 > [!WARNING]
 > 
-> 为了适配 [Pokémon Essentials](https://github.com/Maruno17/pokemon-essentials) 字体布局引擎的一些怪癖，字体参数部分做了一些特殊处理。
-> 
-> 所以本字体可能不适用于常规项目。
+> 为了适配 [mkxp-z](https://github.com/mkxp-z/mkxp-z) 字体渲染相关的一些特殊行为，本字体参数做了一些特殊处理，所以可能无法正常用于普通项目。
 
-## 使用方式
+## 字体变种
 
 字体包含三个变种，与默认字体对应关系如下：
 
-| 版本 | 对应 | 字号 |
+| 字体名称 | 对应的默认字体 | 栅格化字号 |
 |---|---|---|
 | Fusion Poke Pixel Normal | Power Green | 13px |
 | Fusion Poke Pixel Narrow | Power Green Narrow | 13px |
 | Fusion Poke Pixel Small | Power Green Small | 11px |
 
-对于多国语，请使用相应的版本：
+
+## 语言支持
+
+目前支持以下语言特定字形版本：
 
 | 版本 | 含义 |
 |---|---|
@@ -54,11 +53,13 @@
 | ja | 日语 |
 | ko | 朝鲜语 |
 
+## 使用方式
+
 [点击此链接](https://github.com/pixel-font-studio/fusion-poke-pixel-font/releases) 下载最新版本。
 
-将压缩包所有字体，复制到 `游戏根目录/Fonts/` 文件夹中。
+将压缩包所有字体，复制到 `游戏/Fonts/` 文件夹中。
 
-以简体中文为例，使用文本编辑器，打开脚本 `游戏根目录/Data/Scripts/007_Objects and windows/002_MessageConfig.rb`，找到并修改如下部分：
+使用文本编辑器打开 `游戏/Data/Scripts/007_Objects and windows/002_MessageConfig.rb`，找到并修改如下部分：
 
 ```ruby
 module MessageConfig
@@ -77,26 +78,45 @@ module MessageConfig
 end
 ```
 
-实际上，对于多语言支持，通常需要添加额外的逻辑来实现根据不同语言启用不同的字体，这里不做详细说明。
+以上仅以简体中文作为示例。实际上，对于多语言支持，通常需要添加额外的逻辑来实现根据不同语言启用不同的字体，这里不做详细说明。
 
 ## 点对点栅格化计算公式
 
-游戏的字体渲染引擎有些不太清楚的细节。
+游戏的运行时在字体渲染部分存在一些特殊行为，需要特殊化处理才能正常显示。
 
-如果需要在游戏中能够点对点的渲染字体，请尝试如下计算公式：
+根据游戏脚本 [scripts/001_Technical/001_MKXP_Compatibility.rb#L1](https://github.com/infinitefusion/scripts/blob/main/001_Technical/001_MKXP_Compatibility.rb#L1) 可知：
 
-```text
-游戏中设置的字号 = (字体字号 + 1) * 显示倍数 + 1
+```ruby
+# Using mkxp-z v2.2.0 - https://gitlab.com/mkxp-z/mkxp-z/-/releases/v2.2.0
 ```
 
-目前游戏使用 2x 显示字体，实际计算如下：
+游戏使用 [mkxp-z v2.2.0](https://github.com/mkxp-z/mkxp-z/tree/v2.2.0) 作为运行时。
 
-```text
-FONT_SIZE = (13 + 1) * 2 + 1 = 29
-SMALL_FONT_SIZE = (11 + 1) * 2 + 1 = 25
+该版本中，存在一处对字体的特殊处理，见 [src/display/font.cpp#L198-L201](https://github.com/mkxp-z/mkxp-z/blob/v2.2.0/src/display/font.cpp#L198-L201)：
+
+```cpp
+//  FIXME 0.9 is guesswork at this point
+//  float gamma = (96.0/45.0)*(5.0/14.0)*(size-5);
+//  font = TTF_OpenFontRW(ops, 1, gamma /** .90*/);
+    font = TTF_OpenFontRW(ops, 1, size* 0.90f);
 ```
 
-上述公式只是推理出来的，具体原理不详。
+这意味着，所有加载的字体，其尺寸都会先乘以 0.9 再交给 SDL_ttf 进行栅格化。
+
+这大概率是为了接近原版 RGSS/Windows GDI 的字体显示效果，但这是一个经验修正，并不是基于字体度量的精确换算。因此对于像素字体，需要额外反向补偿。
+
+因此，为了让字体能够点对点栅格化显示，需要使用以下公式计算游戏中的字体字号，以抵消其缩放影响：
+
+```text
+游戏中设置的字号 = ceil(字体字号 * 显示倍数 / 0.9)
+```
+
+游戏中的字体目前以 2 倍显示，在使用本字体时，相关字号应该设置为：
+
+```text
+FONT_SIZE = ceil(13 * 2 / 0.9) = 29
+SMALL_FONT_SIZE = ceil(11 * 2 / 0.9) = 25
+```
 
 ## 程序依赖
 
