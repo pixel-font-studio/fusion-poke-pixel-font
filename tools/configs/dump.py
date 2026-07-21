@@ -9,7 +9,7 @@ from tools.configs.options import FontSize
 class DumpConfig:
     @staticmethod
     def load() -> list[DumpConfig]:
-        data = yaml.safe_load(path_define.configs_dir.joinpath('dump.yml').read_bytes())
+        data = yaml.safe_load(path_define.configs_dir.joinpath('dump.yaml').read_bytes())
         dump_configs = []
         for name, items_data in data.items():
             for item_data in items_data:

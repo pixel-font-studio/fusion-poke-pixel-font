@@ -9,7 +9,7 @@ from tools.configs.options import FontSize, LanguageFileFlavor
 class FallbackConfig:
     @staticmethod
     def load() -> list[FallbackConfig]:
-        data = yaml.safe_load(path_define.configs_dir.joinpath('fallback.yml').read_bytes())
+        data = yaml.safe_load(path_define.configs_dir.joinpath('fallback.yaml').read_bytes())
         fallback_configs = []
         for config_data in data:
             font_size = config_data['font-size']
