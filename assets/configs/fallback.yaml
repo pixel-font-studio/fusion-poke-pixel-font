@@ -3,22 +3,22 @@
   font-size: 10
   dir-from: boutique-bitmap/4E00-9FFF CJK Unified Ideographs
   width-mode-dir-name: common
-  flavor: zh_hk,zh_tw,zh_tr
+  flavors: zh_hk,zh_tw,zh_tr
 -
   font-size: 10
   dir-from: galmuri/4E00-9FFF CJK Unified Ideographs
   width-mode-dir-name: common
-  flavor: ko
+  flavors: ko
 -
   font-size: 12
   dir-from: cubic-11/4E00-9FFF CJK Unified Ideographs
   width-mode-dir-name: common
-  flavor: zh_hk,zh_tw,zh_tr
+  flavors: zh_hk,zh_tw,zh_tr
 -
   font-size: 12
   dir-from: galmuri/4E00-9FFF CJK Unified Ideographs
   width-mode-dir-name: common
-  flavor: ko
+  flavors: ko
 
 # 谚文
 -
