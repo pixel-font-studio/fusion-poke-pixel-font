@@ -123,6 +123,7 @@ SMALL_FONT_SIZE = ceil(11 * 2 / 0.9) = 25
 - [Pixel Font Builder](https://github.com/TakWolf/pixel-font-builder)
 - [Pixel Font Knife](https://github.com/TakWolf/pixel-font-knife)
 - [FontTools](https://github.com/fonttools/fonttools)
+- [Unidata Blocks](https://github.com/TakWolf/unidata-blocks)
 - [PyYAML](https://github.com/yaml/pyyaml)
 - [Pillow](https://github.com/python-pillow/Pillow)
 - [HTTPX](https://github.com/encode/httpx)
