@@ -41,17 +41,17 @@
 | Fusion Poke Pixel Small | Power Green Small | 11px |
 
 
-## 语言支持
+## 语言特定字形
 
 目前支持以下语言特定字形版本：
 
 | 版本 | 含义 |
 |---|---|
-| latin | 泛拉丁语 |
+| latin | 拉丁文字环境 |
 | zh_hans | 简体中文 |
 | zh_hant | 繁體中文 |
 | ja | 日语 |
-| ko | 朝鲜语 |
+| ko | 韩语 |
 
 ## 使用方式
 
