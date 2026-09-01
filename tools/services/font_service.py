@@ -76,15 +76,21 @@ def _create_builder(
 
     glyph_sequence = glyph_file_util.get_glyph_sequence(glyph_files, [language_flavor])
     for glyph_file in glyph_sequence:
-        horizontal_offset_x = 0
-        horizontal_offset_y = font_config.baseline - font_config.font_size - (glyph_file.height - font_config.font_size) // 2
-        advance_width = glyph_file.width
+        optimized_bitmap = glyph_file.optimized_bitmap
+        optimized_paddings = glyph_file.optimized_paddings
+
+        if optimized_bitmap.width == 0 or optimized_bitmap.height == 0:
+            horizontal_offset_x = 0
+            horizontal_offset_y = 0
+        else:
+            horizontal_offset_x = optimized_paddings.left
+            horizontal_offset_y = font_config.baseline - font_config.font_size - (glyph_file.height - font_config.font_size) // 2 + optimized_paddings.bottom
 
         builder.glyphs.append(Glyph(
             name=glyph_file.glyph_name,
             horizontal_offset=(horizontal_offset_x, horizontal_offset_y),
-            advance_width=advance_width,
-            bitmap=glyph_file.bitmap.data,
+            advance_width=glyph_file.width,
+            bitmap=optimized_bitmap.data,
         ))
 
     character_mapping = glyph_file_util.get_character_mapping(glyph_files, language_flavor)
