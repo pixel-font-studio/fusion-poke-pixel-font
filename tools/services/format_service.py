@@ -5,10 +5,11 @@ from tools.configs.options import FontSize
 
 
 def format_glyphs(font_size: FontSize):
-    for width_mode_dir_name in ('common', 'proportional', 'narrow'):
-        width_mode_dir = path_define.patch_glyphs_dir.joinpath(str(font_size), width_mode_dir_name)
-        context = glyph_file_util.load_context(width_mode_dir)
-        glyph_file_util.normalize_context(context, width_mode_dir, options.language_file_flavors)
+    for glyphs_dir in (path_define.patch_glyphs_dir, path_define.poke_glyphs_dir):
+        for width_mode_dir_name in ('common', 'proportional', 'narrow'):
+            width_mode_dir = glyphs_dir.joinpath(str(font_size), width_mode_dir_name)
+            context = glyph_file_util.load_context(width_mode_dir)
+            glyph_file_util.normalize_context(context, width_mode_dir, options.language_file_flavors)
 
 
 def format_mappings():

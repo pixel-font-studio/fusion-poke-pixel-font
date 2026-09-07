@@ -5,6 +5,7 @@ project_root_dir = Path(__file__).parent.joinpath('..', '..').resolve()
 assets_dir = project_root_dir.joinpath('assets')
 configs_dir = assets_dir.joinpath('configs')
 patch_glyphs_dir = assets_dir.joinpath('patch-glyphs')
+poke_glyphs_dir = assets_dir.joinpath('poke-glyphs')
 fonts_dir = assets_dir.joinpath('fonts')
 mappings_dir = assets_dir.joinpath('mappings')
 
