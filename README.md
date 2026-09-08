@@ -6,7 +6,7 @@
 
 这是一个为同人游戏 [「宝可梦无限融合 / Pokémon Infinite Fusion」](https://discord.gg/infinitefusion) 定制的字体项目。
 
-设计上用于替换游戏的默认字体，以提供更好的显示效果。字符范围支持泛拉丁和泛中日韩语言，可用于游戏大部分多国语的字体解决方案。
+设计上用于替换游戏的默认字体，以提供更好的显示效果。字符范围覆盖泛拉丁与泛中日韩文字，可用于游戏的大部分多语言场景。
 
 本项目构建修改自 [「缝合像素字体」](https://github.com/TakWolf/fusion-pixel-font) 项目，并以 [「无限融合2：丰缘 / Infinite Fusion 2: Hoenn」](https://github.com/infinitefusion/infinitefusion-hoenn-public) 作为适配目标。
 
@@ -136,7 +136,7 @@ SMALL_FONT_SIZE = ceil(11 * 2 / 0.9) = 25
 
 ### 字体
 
-使用 [「SIL 开放字体许可证第 1.1 版」](LICENSE-OFL) 授权。
+采用 [SIL Open Font License version 1.1](LICENSE-OFL) 授权。
 
 上游字体许可证如下：
 
@@ -149,4 +149,4 @@ SMALL_FONT_SIZE = ceil(11 * 2 / 0.9) = 25
 
 ### 构建程序
 
-使用 [「MIT 许可证」](LICENSE-MIT) 授权。
+采用 [MIT License](LICENSE-MIT) 授权。
