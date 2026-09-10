@@ -67,7 +67,7 @@ def _create_builder(
     builder.meta_info.width_style = WidthStyle.PROPORTIONAL
     builder.meta_info.manufacturer = 'TakWolf'
     builder.meta_info.designer = 'TakWolf'
-    builder.meta_info.description = 'Open source Pan-CJK pixel font'
+    builder.meta_info.description = 'Open-source Pan-Latin and Pan-CJK pixel font in a sans-serif style'
     builder.meta_info.copyright_info = 'Copyright (c) 2026, TakWolf (https://takwolf.com)'
     builder.meta_info.license_info = 'This Font Software is licensed under the SIL Open Font License, Version 1.1'
     builder.meta_info.vendor_url = 'https://github.com/pixel-font-studio/fusion-poke-pixel-font'
