@@ -11,8 +11,8 @@ from tools.configs import path_define, options
 
 
 def dump_fonts():
-    for dump_config in configs.dump_configs:
-        dump_dir = path_define.dump_dir.joinpath(str(dump_config.font_size), dump_config.dump_dir_name)
+    for dump_config in configs.DUMP_CONFIGS:
+        dump_dir = path_define.DUMP_DIR.joinpath(str(dump_config.font_size), dump_config.dump_dir_name)
         logger.info("Dump glyphs: '{}'", dump_dir)
 
         font = TTFont(dump_config.font_file_path)
@@ -48,8 +48,8 @@ def dump_fonts():
 
 def apply_fallbacks():
     contexts = {}
-    for fallback_config in configs.fallback_configs:
-        dir_from = path_define.dump_dir.joinpath(str(fallback_config.font_size), fallback_config.dir_from)
+    for fallback_config in configs.FALLBACK_CONFIGS:
+        dir_from = path_define.DUMP_DIR.joinpath(str(fallback_config.font_size), fallback_config.dir_from)
         assert dir_from.is_dir(), f"dump dir not exist: '{dir_from}'"
         logger.info("Fallback glyphs: '{}' '{}' '{}'", fallback_config.width_mode_dir_name, fallback_config.flavors, dir_from)
 
@@ -60,7 +60,7 @@ def apply_fallbacks():
             context = {}
             contexts[context_key] = context
 
-        font_config = configs.font_configs[fallback_config.font_size]
+        font_config = configs.FONT_CONFIGS[fallback_config.font_size]
         if fallback_config.width_mode_dir_name == 'proportional':
             canvas_size = font_config.canvas_size
         else:
@@ -99,7 +99,7 @@ def apply_fallbacks():
                     flavors.update(fallback_config.flavors)
 
     for (font_size, width_mode_dir_name), context in contexts.items():
-        width_mode_dir = path_define.fallback_glyphs_dir.joinpath(str(font_size), width_mode_dir_name)
+        width_mode_dir = path_define.FALLBACK_GLYPHS_DIR.joinpath(str(font_size), width_mode_dir_name)
         for code_point, bitmap_strings in context.items():
             code_name = f'{code_point:04X}'
             block = unidata_blocks.get_block_by_code_point(code_point)
@@ -110,7 +110,7 @@ def apply_fallbacks():
 
             for bitmap, flavors in bitmap_strings.values():
                 if len(flavors) > 0:
-                    flavors = sorted(flavors, key=lambda x: options.language_file_flavors.index(x))
+                    flavors = sorted(flavors, key=lambda x: options.LANGUAGE_FILE_FLAVORS.index(x))
                     file_name = f'{code_name} {",".join(flavors)}.png'
                 else:
                     file_name = f'{code_name}.png'

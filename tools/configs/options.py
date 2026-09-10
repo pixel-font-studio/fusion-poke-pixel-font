@@ -4,7 +4,7 @@ type FontSize = Literal[
     10,
     12,
 ]
-font_sizes = list[FontSize](get_args(FontSize.__value__))
+FONT_SIZES = list[FontSize](get_args(FontSize.__value__))
 
 type LanguageFlavor = Literal[
     'latin',
@@ -13,7 +13,7 @@ type LanguageFlavor = Literal[
     'ja',
     'ko',
 ]
-language_flavors = list[LanguageFlavor](get_args(LanguageFlavor.__value__))
+LANGUAGE_FLAVORS = list[LanguageFlavor](get_args(LanguageFlavor.__value__))
 
 type LanguageFileFlavor = Literal[
     'latin',
@@ -24,4 +24,4 @@ type LanguageFileFlavor = Literal[
     'ja',
     'ko',
 ]
-language_file_flavors = list[LanguageFileFlavor](get_args(LanguageFileFlavor.__value__))
+LANGUAGE_FILE_FLAVORS = list[LanguageFileFlavor](get_args(LanguageFileFlavor.__value__))

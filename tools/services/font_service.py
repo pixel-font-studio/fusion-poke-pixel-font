@@ -14,19 +14,19 @@ from tools.configs.options import FontSize, LanguageFlavor
 def load_contexts(font_size: FontSize) -> dict[str, dict[int, GlyphFlavorGroup]]:
     contexts = {}
     for width_mode_dir_name in ('common', 'proportional', 'narrow'):
-        context = glyph_file_util.load_context(path_define.fallback_glyphs_dir.joinpath(str(font_size), width_mode_dir_name))
-        context.update(glyph_file_util.load_context(path_define.ark_pixel_glyphs_dir.joinpath(str(font_size), width_mode_dir_name)))
-        context.update(glyph_file_util.load_context(path_define.patch_glyphs_dir.joinpath(str(font_size), width_mode_dir_name)))
-        context.update(glyph_file_util.load_context(path_define.poke_glyphs_dir.joinpath(str(font_size), width_mode_dir_name)))
+        context = glyph_file_util.load_context(path_define.FALLBACK_GLYPHS_DIR.joinpath(str(font_size), width_mode_dir_name))
+        context.update(glyph_file_util.load_context(path_define.ARK_PIXEL_GLYPHS_DIR.joinpath(str(font_size), width_mode_dir_name)))
+        context.update(glyph_file_util.load_context(path_define.PATCH_GLYPHS_DIR.joinpath(str(font_size), width_mode_dir_name)))
+        context.update(glyph_file_util.load_context(path_define.POKE_GLYPHS_DIR.joinpath(str(font_size), width_mode_dir_name)))
 
         for flavor_group in context.values():
             if None not in flavor_group:
-                for language_flavor in options.language_file_flavors:
+                for language_flavor in options.LANGUAGE_FILE_FLAVORS:
                     if language_flavor in flavor_group:
                         flavor_group[None] = flavor_group[language_flavor]
                         break
 
-        for mapping in configs.mappings:
+        for mapping in configs.MAPPINGS:
             glyph_mapping_util.apply_mapping(context, mapping)
 
         for flavor_group in context.values():
@@ -58,8 +58,8 @@ def _create_builder(
     builder.font_metric.strikeout_position = font_config.strikeout_position
     builder.font_metric.strikeout_thickness = 1
 
-    builder.meta_info.version = configs.version
-    builder.meta_info.created_time = datetime.fromisoformat(f'{configs.version.replace('.', '-')}T00:00:00Z')
+    builder.meta_info.version = configs.VERSION
+    builder.meta_info.created_time = datetime.fromisoformat(f'{configs.VERSION.replace('.', '-')}T00:00:00Z')
     builder.meta_info.modified_time = builder.meta_info.created_time
     builder.meta_info.family_name = f'Fusion Poke Pixel {family_name_patch} {language_flavor}'
     builder.meta_info.weight_name = WeightName.REGULAR
@@ -109,15 +109,15 @@ def make_fonts(
         contexts: dict[str, dict[int, GlyphFlavorGroup]],
         include_narrow: bool,
 ):
-    path_define.outputs_dir.mkdir(parents=True, exist_ok=True)
+    path_define.OUTPUTS_DIR.mkdir(parents=True, exist_ok=True)
 
-    font_config = configs.font_configs[font_size]
+    font_config = configs.FONT_CONFIGS[font_size]
 
     glyph_files = contexts['common'] | contexts['proportional']
     if include_narrow:
         glyph_files.update(contexts['narrow'])
 
-    for language_flavor in options.language_flavors:
+    for language_flavor in options.LANGUAGE_FLAVORS:
         builder = _create_builder(font_config, family_name_patch, glyph_files, language_flavor)
 
         tt_font = builder.to_ttf_builder().font
@@ -145,6 +145,6 @@ def make_fonts(
             tb_os2.usWinAscent = 703
             tb_os2.usWinDescent = 88
 
-        file_path = path_define.outputs_dir.joinpath(f'fusion-poke-pixel-{family_name_patch.lower()}-{language_flavor}.ttf')
+        file_path = path_define.OUTPUTS_DIR.joinpath(f'fusion-poke-pixel-{family_name_patch.lower()}-{language_flavor}.ttf')
         tt_font.save(file_path)
         logger.info("Make font: '{}'", file_path)

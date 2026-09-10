@@ -5,8 +5,8 @@ from tools.services import setup_service, dump_service, font_service, publish_se
 
 
 def main():
-    if path_define.build_dir.exists():
-        shutil.rmtree(path_define.build_dir)
+    if path_define.BUILD_DIR.exists():
+        shutil.rmtree(path_define.BUILD_DIR)
 
     setup_service.setup_ark_pixel()
 
