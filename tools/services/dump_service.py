@@ -10,7 +10,7 @@ from tools import configs
 from tools.configs import path_define, options
 
 
-def dump_fonts():
+def dump_fonts() -> None:
     for dump_config in configs.DUMP_CONFIGS:
         dump_dir = path_define.DUMP_DIR.joinpath(str(dump_config.font_size), dump_config.dump_dir_name)
         logger.info("Dump glyphs: '{}'", dump_dir)
@@ -46,7 +46,7 @@ def dump_fonts():
             image.save(glyph_file_path)
 
 
-def apply_fallbacks():
+def apply_fallbacks() -> None:
     contexts = {}
     for fallback_config in configs.FALLBACK_CONFIGS:
         dir_from = path_define.DUMP_DIR.joinpath(str(fallback_config.font_size), fallback_config.dir_from)

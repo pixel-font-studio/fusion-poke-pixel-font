@@ -4,7 +4,7 @@ from tools.configs import path_define
 from tools.services import setup_service, dump_service, font_service, publish_service
 
 
-def main():
+def main() -> None:
     if path_define.BUILD_DIR.exists():
         shutil.rmtree(path_define.BUILD_DIR)
 

@@ -6,7 +6,7 @@ from tools import configs
 from tools.configs import path_define
 
 
-def make_release_zip():
+def make_release_zip() -> None:
     path_define.RELEASES_DIR.mkdir(parents=True, exist_ok=True)
 
     file_path = path_define.RELEASES_DIR.joinpath(f'fusion-poke-pixel-font-v{configs.VERSION}.zip')

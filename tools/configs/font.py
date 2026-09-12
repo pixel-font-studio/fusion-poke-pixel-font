@@ -50,7 +50,7 @@ class FontConfig:
             cap_height: int,
             underline_position: int,
             strikeout_position: int,
-    ):
+    ) -> None:
         self.font_size = font_size
         self.canvas_size = canvas_size
         self.baseline = baseline

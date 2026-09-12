@@ -108,7 +108,7 @@ def make_fonts(
         family_name_patch: str,
         contexts: dict[str, dict[int, GlyphFlavorGroup]],
         include_narrow: bool,
-):
+) -> None:
     path_define.OUTPUTS_DIR.mkdir(parents=True, exist_ok=True)
 
     font_config = configs.FONT_CONFIGS[font_size]
