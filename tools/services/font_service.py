@@ -29,12 +29,6 @@ def load_contexts(font_size: FontSize) -> dict[str, dict[int, GlyphFlavorGroup]]
         for mapping in configs.MAPPINGS:
             glyph_mapping_util.apply_mapping(context, mapping)
 
-        for flavor_group in context.values():
-            if 'zh_cn' in flavor_group:
-                flavor_group['zh_hans'] = flavor_group['zh_cn']
-            if 'zh_tr' in flavor_group:
-                flavor_group['zh_hant'] = flavor_group['zh_tr']
-
         contexts[width_mode_dir_name] = context
     return contexts
 
@@ -61,7 +55,7 @@ def _create_builder(
     builder.meta_info.version = configs.VERSION
     builder.meta_info.created_time = datetime.fromisoformat(f'{configs.VERSION.replace('.', '-')}T00:00:00Z')
     builder.meta_info.modified_time = builder.meta_info.created_time
-    builder.meta_info.family_name = f'Fusion Poke Pixel {family_name_patch} {language_flavor}'
+    builder.meta_info.family_name = f'Fusion Poke Pixel {family_name_patch} {configs.LANGUAGE_FLAVOR_TO_FONT_NAME[language_flavor]}'
     builder.meta_info.weight_name = WeightName.REGULAR
     builder.meta_info.serif_style = SerifStyle.SANS_SERIF
     builder.meta_info.slant_style = SlantStyle.NORMAL

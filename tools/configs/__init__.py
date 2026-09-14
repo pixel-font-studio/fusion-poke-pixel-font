@@ -36,3 +36,11 @@ LICENSE_CONFIGS = {
         'LICENSE.txt',
     ],
 }
+
+LANGUAGE_FLAVOR_TO_FONT_NAME = {
+    'latin': 'latin',
+    'zh_hans': 'zh-Hans',
+    'zh_hant': 'zh-Hant',
+    'ja': 'ja',
+    'ko': 'ko',
+}
