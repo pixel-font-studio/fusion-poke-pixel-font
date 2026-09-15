@@ -1,0 +1,13 @@
+from tools.configs import options
+from tools.services import check_service
+
+
+def main() -> None:
+    for font_size in options.FONT_SIZES:
+        check_service.check_glyphs(font_size)
+
+    check_service.check_mappings()
+
+
+if __name__ == '__main__':
+    main()

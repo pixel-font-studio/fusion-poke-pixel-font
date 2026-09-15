@@ -200,6 +200,7 @@ dependencies = [
     { name = "pixel-font-knife" },
     { name = "pyyaml" },
     { name = "tqdm" },
+    { name = "unicodedata2" },
     { name = "unidata-blocks" },
 ]
 
@@ -213,6 +214,7 @@ requires-dist = [
     { name = "pixel-font-knife", specifier = "==0.0.28" },
     { name = "pyyaml", specifier = "==6.0.3" },
     { name = "tqdm", specifier = "==4.70.0" },
+    { name = "unicodedata2", specifier = "==17.0.1" },
     { name = "unidata-blocks", specifier = "==0.0.26" },
 ]
 
