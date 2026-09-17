@@ -1,10 +1,13 @@
 from pixel_font_knife import glyph_file_util, glyph_mapping_util
+from pixel_font_knife.glyph_file_util import GlyphFile
 
 from tools.configs import path_define, options
 from tools.configs.options import FontSize
 
 
 def format_glyphs(font_size: FontSize) -> None:
+    GlyphFile.load(path_define.PATCH_GLYPHS_DIR.joinpath(str(font_size), 'notdef.png')).save()
+
     for glyphs_dir in (path_define.PATCH_GLYPHS_DIR, path_define.POKE_GLYPHS_DIR):
         for glyph_scope in options.GLYPH_SCOPES:
             glyph_scope_dir = glyphs_dir.joinpath(str(font_size), glyph_scope)

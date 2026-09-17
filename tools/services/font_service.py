@@ -4,20 +4,23 @@ from datetime import datetime
 from loguru import logger
 from pixel_font_builder import FontBuilder, WeightName, SerifStyle, SlantStyle, WidthStyle, Glyph
 from pixel_font_knife import glyph_file_util, glyph_mapping_util
-from pixel_font_knife.glyph_file_util import GlyphFlavorGroup
+from pixel_font_knife.glyph_file_util import GlyphFile, GlyphFlavorGroup
 
 from tools import configs
 from tools.configs import path_define, options, FontConfig
 from tools.configs.options import FontSize, LanguageFlavor
 
 
-def load_contexts(font_size: FontSize) -> dict[str, dict[int, GlyphFlavorGroup]]:
+def load_contexts(font_size: FontSize) -> tuple[GlyphFile, dict[str, dict[int, GlyphFlavorGroup]]]:
+    notdef_glyph_file = GlyphFile.load(path_define.PATCH_GLYPHS_DIR.joinpath(str(font_size), 'notdef.png'))
+
     contexts = {}
     for glyph_scope in options.GLYPH_SCOPES:
         context = glyph_file_util.load_context(path_define.FALLBACK_GLYPHS_DIR.joinpath(str(font_size), glyph_scope))
         context.update(glyph_file_util.load_context(path_define.ARK_PIXEL_GLYPHS_DIR.joinpath(str(font_size), glyph_scope)))
         context.update(glyph_file_util.load_context(path_define.PATCH_GLYPHS_DIR.joinpath(str(font_size), glyph_scope)))
         context.update(glyph_file_util.load_context(path_define.POKE_GLYPHS_DIR.joinpath(str(font_size), glyph_scope)))
+        context.pop(-1, None)
 
         for flavor_group in context.values():
             if None not in flavor_group:
@@ -30,12 +33,13 @@ def load_contexts(font_size: FontSize) -> dict[str, dict[int, GlyphFlavorGroup]]
             glyph_mapping_util.apply_mapping(context, mapping)
 
         contexts[glyph_scope] = context
-    return contexts
+    return notdef_glyph_file, contexts
 
 
 def _create_builder(
         font_config: FontConfig,
         family_name_patch: str,
+        notdef_glyph_file: GlyphFile,
         glyph_files: dict[int, GlyphFlavorGroup],
         language_flavor: LanguageFlavor,
 ) -> FontBuilder:
@@ -69,7 +73,7 @@ def _create_builder(
     builder.meta_info.designer_url = 'https://takwolf.com'
     builder.meta_info.license_url = 'https://github.com/pixel-font-studio/fusion-poke-pixel-font/blob/master/LICENSE-OFL'
 
-    glyph_sequence = glyph_file_util.get_glyph_sequence(glyph_files, [language_flavor])
+    glyph_sequence = [notdef_glyph_file] + glyph_file_util.get_glyph_sequence(glyph_files, [language_flavor])
     for glyph_file in glyph_sequence:
         optimized_bitmap = glyph_file.optimized_bitmap
         optimized_paddings = glyph_file.optimized_paddings
@@ -100,6 +104,7 @@ def _create_builder(
 def make_fonts(
         font_size: FontSize,
         family_name_patch: str,
+        notdef_glyph_file: GlyphFile,
         contexts: dict[str, dict[int, GlyphFlavorGroup]],
         include_narrow: bool,
 ) -> None:
@@ -112,7 +117,7 @@ def make_fonts(
         glyph_files.update(contexts['narrow'])
 
     for language_flavor in options.LANGUAGE_FLAVORS:
-        builder = _create_builder(font_config, family_name_patch, glyph_files, language_flavor)
+        builder = _create_builder(font_config, family_name_patch, notdef_glyph_file, glyph_files, language_flavor)
 
         tt_font = builder.to_ttf_builder().font
         tb_head = tt_font['head']
