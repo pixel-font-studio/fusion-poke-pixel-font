@@ -11,8 +11,8 @@ def check_glyphs(font_size: FontSize) -> None:
     canvas_size = configs.FONT_CONFIGS[font_size].canvas_size
 
     for glyphs_dir in (path_define.PATCH_GLYPHS_DIR, path_define.POKE_GLYPHS_DIR):
-        for width_mode_dir_name in ('common', 'proportional', 'narrow'):
-            context = glyph_file_util.load_context(glyphs_dir.joinpath(str(font_size), width_mode_dir_name))
+        for glyph_scope in options.GLYPH_SCOPES:
+            context = glyph_file_util.load_context(glyphs_dir.joinpath(str(font_size), glyph_scope))
 
             for code_point, flavor_group in sorted(context.items()):
                 if code_point == -1:
@@ -25,7 +25,7 @@ def check_glyphs(font_size: FontSize) -> None:
                 if code_point not in (
                         0x2E95,
                 ):
-                    assert None in flavor_group, f'[{font_size}px] missing default flavor: {width_mode_dir_name} {code_point:04X}'
+                    assert None in flavor_group, f'[{font_size}px] missing default flavor: {glyph_scope} {code_point:04X}'
 
                 for language_flavor, glyph_file in flavor_group.items():
                     assert language_flavor is None or language_flavor in options.LANGUAGE_FLAVORS, f"[{font_size}px] unknown flavor: {language_flavor}\n'{glyph_file.file_path}'"
@@ -36,7 +36,7 @@ def check_glyphs(font_size: FontSize) -> None:
                     assert bitmap_string not in bitmap_strings, f"[{font_size}px] duplicate glyph bitmaps:\n'{glyph_file.file_path}'\n'{bitmap_strings[bitmap_string].file_path}'"
                     bitmap_strings[bitmap_string] = glyph_file
 
-                    if width_mode_dir_name == 'common' and block is not None and block.name not in (
+                    if glyph_scope == 'common' and block is not None and block.name not in (
                             'Box Drawing',
                             'Block Elements',
                     ) and code_point not in (
@@ -56,7 +56,7 @@ def check_glyphs(font_size: FontSize) -> None:
                         ):
                             assert all(glyph_file.bitmap[i][-1] == 0 for i in range(0, len(glyph_file.bitmap))), f"[{font_size}px] glyph bitmap size error: '{glyph_file.file_path}'"
 
-                    if width_mode_dir_name == 'common':
+                    if glyph_scope == 'common' or glyph_scope == 'monospaced':
                         assert glyph_file.height % font_size == 0, f"[{font_size}px] glyph bitmap size error: '{glyph_file.file_path}'"
 
                         match east_asian_width:
@@ -70,7 +70,7 @@ def check_glyphs(font_size: FontSize) -> None:
                                 ):
                                     assert glyph_file.width % (font_size / 2) == 0, f"[{font_size}px] glyph bitmap size error: '{glyph_file.file_path}'"
 
-                    if width_mode_dir_name == 'proportional' or width_mode_dir_name == 'narrow':
+                    if glyph_scope == 'proportional' or glyph_scope == 'narrow':
                         assert glyph_file.height == canvas_size, f"[{font_size}px] glyph bitmap size error: '{glyph_file.file_path}'"
 
 

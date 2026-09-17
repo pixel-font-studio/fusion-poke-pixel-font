@@ -13,11 +13,11 @@ from tools.configs.options import FontSize, LanguageFlavor
 
 def load_contexts(font_size: FontSize) -> dict[str, dict[int, GlyphFlavorGroup]]:
     contexts = {}
-    for width_mode_dir_name in ('common', 'proportional', 'narrow'):
-        context = glyph_file_util.load_context(path_define.FALLBACK_GLYPHS_DIR.joinpath(str(font_size), width_mode_dir_name))
-        context.update(glyph_file_util.load_context(path_define.ARK_PIXEL_GLYPHS_DIR.joinpath(str(font_size), width_mode_dir_name)))
-        context.update(glyph_file_util.load_context(path_define.PATCH_GLYPHS_DIR.joinpath(str(font_size), width_mode_dir_name)))
-        context.update(glyph_file_util.load_context(path_define.POKE_GLYPHS_DIR.joinpath(str(font_size), width_mode_dir_name)))
+    for glyph_scope in options.GLYPH_SCOPES:
+        context = glyph_file_util.load_context(path_define.FALLBACK_GLYPHS_DIR.joinpath(str(font_size), glyph_scope))
+        context.update(glyph_file_util.load_context(path_define.ARK_PIXEL_GLYPHS_DIR.joinpath(str(font_size), glyph_scope)))
+        context.update(glyph_file_util.load_context(path_define.PATCH_GLYPHS_DIR.joinpath(str(font_size), glyph_scope)))
+        context.update(glyph_file_util.load_context(path_define.POKE_GLYPHS_DIR.joinpath(str(font_size), glyph_scope)))
 
         for flavor_group in context.values():
             if None not in flavor_group:
@@ -29,7 +29,7 @@ def load_contexts(font_size: FontSize) -> dict[str, dict[int, GlyphFlavorGroup]]
         for mapping in configs.MAPPINGS:
             glyph_mapping_util.apply_mapping(context, mapping)
 
-        contexts[width_mode_dir_name] = context
+        contexts[glyph_scope] = context
     return contexts
 
 

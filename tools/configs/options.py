@@ -6,6 +6,14 @@ type FontSize = Literal[
 ]
 FONT_SIZES = list[FontSize](get_args(FontSize.__value__))
 
+type GlyphScope = Literal[
+    'common',
+    'monospaced',
+    'proportional',
+    'narrow',
+]
+GLYPH_SCOPES = list[GlyphScope](get_args(GlyphScope.__value__))
+
 type LanguageFlavor = Literal[
     'latin',
     'zh_hans',
