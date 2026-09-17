@@ -10,7 +10,7 @@ def format_glyphs(font_size: FontSize) -> None:
 
     for glyphs_dir in (path_define.PATCH_GLYPHS_DIR, path_define.POKE_GLYPHS_DIR):
         for glyph_scope in options.GLYPH_SCOPES:
-            glyph_scope_dir = glyphs_dir.joinpath(str(font_size), glyph_scope)
+            glyph_scope_dir = glyphs_dir.joinpath(str(font_size), 'cmap', glyph_scope)
             context = glyph_file_util.load_context(glyph_scope_dir)
             glyph_file_util.normalize_context(context, glyph_scope_dir, options.LANGUAGE_FLAVORS)
 

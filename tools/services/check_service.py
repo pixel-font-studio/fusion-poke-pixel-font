@@ -12,7 +12,7 @@ def check_glyphs(font_size: FontSize) -> None:
 
     for glyphs_dir in (path_define.PATCH_GLYPHS_DIR, path_define.POKE_GLYPHS_DIR):
         for glyph_scope in options.GLYPH_SCOPES:
-            context = glyph_file_util.load_context(glyphs_dir.joinpath(str(font_size), glyph_scope))
+            context = glyph_file_util.load_context(glyphs_dir.joinpath(str(font_size), 'cmap', glyph_scope))
 
             for code_point, flavor_group in sorted(context.items()):
                 block = unidata_blocks.get_block_by_code_point(code_point)
