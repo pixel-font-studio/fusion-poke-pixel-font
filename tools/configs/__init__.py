@@ -1,4 +1,4 @@
-from pixel_font_knife import glyph_mapping_util
+from pixel_font_knife.cmap.mapping.mapping import CmapMapping
 
 from tools.configs import path_define, options
 from tools.configs.dump import DumpConfig
@@ -17,9 +17,18 @@ FALLBACK_CONFIGS = FallbackConfig.load()
 FONT_CONFIGS = {font_size: FontConfig.load(font_size) for font_size in options.FONT_SIZES}
 
 MAPPINGS = [
-    glyph_mapping_util.load_mapping(path_define.CONFIGS_MAPPINGS_DIR.joinpath('0080-00FF Latin-1 Supplement.yaml')),
-    glyph_mapping_util.load_mapping(path_define.CONFIGS_MAPPINGS_DIR.joinpath('2E80-2EFF CJK Radicals Supplement.yaml')),
-    glyph_mapping_util.load_mapping(path_define.CONFIGS_MAPPINGS_DIR.joinpath('2F00-2FDF Kangxi Radicals.yaml')),
+    CmapMapping.load_yaml(
+        path_define.CONFIGS_MAPPINGS_DIR.joinpath('0080-00FF Latin-1 Supplement.yaml'),
+        allowed_flavors=options.LANGUAGE_FLAVORS,
+    ),
+    CmapMapping.load_yaml(
+        path_define.CONFIGS_MAPPINGS_DIR.joinpath('2E80-2EFF CJK Radicals Supplement.yaml'),
+        allowed_flavors=options.LANGUAGE_FLAVORS,
+    ),
+    CmapMapping.load_yaml(
+        path_define.CONFIGS_MAPPINGS_DIR.joinpath('2F00-2FDF Kangxi Radicals.yaml'),
+        allowed_flavors=options.LANGUAGE_FLAVORS,
+    ),
 ]
 
 LICENSE_CONFIGS = {
