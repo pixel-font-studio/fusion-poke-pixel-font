@@ -3,11 +3,14 @@ from pathlib import Path
 PROJECT_ROOT_DIR = Path(__file__).parent.joinpath('..', '..').resolve()
 
 ASSETS_DIR = PROJECT_ROOT_DIR.joinpath('assets')
+
 CONFIGS_DIR = ASSETS_DIR.joinpath('configs')
+CONFIGS_FONTS_DIR = CONFIGS_DIR.joinpath('fonts')
+CONFIGS_MAPPINGS_DIR = CONFIGS_DIR.joinpath('mappings')
+
+FONTS_DIR = ASSETS_DIR.joinpath('fonts')
 PATCH_GLYPHS_DIR = ASSETS_DIR.joinpath('patch-glyphs')
 POKE_GLYPHS_DIR = ASSETS_DIR.joinpath('poke-glyphs')
-FONTS_DIR = ASSETS_DIR.joinpath('fonts')
-MAPPINGS_DIR = ASSETS_DIR.joinpath('mappings')
 
 CACHE_DIR = PROJECT_ROOT_DIR.joinpath('cache')
 DOWNLOADS_DIR = CACHE_DIR.joinpath('downloads')
