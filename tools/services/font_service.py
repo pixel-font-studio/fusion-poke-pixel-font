@@ -1,54 +1,56 @@
-import math
+from collections.abc import Mapping
 from datetime import datetime
 
 from loguru import logger
 from pixel_font_builder import FontBuilder, WeightName, SerifStyle, SlantStyle, WidthStyle, Glyph
-from pixel_font_knife import glyph_file_util, glyph_mapping_util
-from pixel_font_knife.glyph_file_util import GlyphFile, GlyphFlavorGroup
+from pixel_font_knife.cmap.context import CmapContext
+from pixel_font_knife.named.file import NamedGlyphFile
 
 from tools import configs
 from tools.configs import path_define, options, FontConfig
-from tools.configs.options import FontSize, LanguageFlavor
+from tools.configs.options import FontSize, GlyphScope, LanguageFlavor
 
 
-def load_contexts(font_size: FontSize) -> tuple[GlyphFile, dict[str, dict[int, GlyphFlavorGroup]]]:
-    notdef_glyph_file = GlyphFile.load(path_define.PATCH_GLYPHS_DIR.joinpath(str(font_size), 'notdef.png'))
+def load_contexts(font_size: FontSize) -> tuple[NamedGlyphFile, Mapping[GlyphScope, CmapContext]]:
+    notdef_glyph_file = NamedGlyphFile.load_notdef(path_define.PATCH_GLYPHS_DIR.joinpath(str(font_size), 'notdef.png'))
 
-    contexts = {}
-    for glyph_scope in options.GLYPH_SCOPES:
-        context = glyph_file_util.load_context(path_define.FALLBACK_GLYPHS_DIR.joinpath(str(font_size), 'cmap', glyph_scope))
-        context.update(glyph_file_util.load_context(path_define.ARK_PIXEL_GLYPHS_DIR.joinpath(str(font_size), 'cmap', glyph_scope)))
-        context.update(glyph_file_util.load_context(path_define.PATCH_GLYPHS_DIR.joinpath(str(font_size), 'cmap', glyph_scope)))
-        context.update(glyph_file_util.load_context(path_define.POKE_GLYPHS_DIR.joinpath(str(font_size), 'cmap', glyph_scope)))
-        context.pop(-1, None)
+    cmap_scope_contexts = {
+        glyph_scope: CmapContext().merge_by_code_point(
+            CmapContext.load(
+                path_define.FALLBACK_GLYPHS_DIR.joinpath(str(font_size), 'cmap', glyph_scope),
+                allowed_flavors=options.LANGUAGE_FLAVORS,
+            ).with_default_flavor(options.LANGUAGE_FLAVORS),
+            CmapContext.load(
+                path_define.ARK_PIXEL_GLYPHS_DIR.joinpath(str(font_size), 'cmap', glyph_scope),
+                allowed_flavors=options.LANGUAGE_FLAVORS,
+            ),
+            CmapContext.load(
+                path_define.PATCH_GLYPHS_DIR.joinpath(str(font_size), 'cmap', glyph_scope),
+                allowed_flavors=options.LANGUAGE_FLAVORS,
+            ),
+            CmapContext.load(
+                path_define.POKE_GLYPHS_DIR.joinpath(str(font_size), 'cmap', glyph_scope),
+                allowed_flavors=options.LANGUAGE_FLAVORS,
+            ),
+            conflict='replace',
+        )
+        for glyph_scope in options.GLYPH_SCOPES
+    }
 
-        for flavor_group in context.values():
-            if None not in flavor_group:
-                for language_flavor in options.LANGUAGE_FLAVORS:
-                    if language_flavor in flavor_group:
-                        flavor_group[None] = flavor_group[language_flavor]
-                        break
-
-        for mapping in configs.MAPPINGS:
-            glyph_mapping_util.apply_mapping(context, mapping)
-
-        contexts[glyph_scope] = context
-    return notdef_glyph_file, contexts
+    return notdef_glyph_file, cmap_scope_contexts
 
 
 def _create_builder(
         font_config: FontConfig,
         family_name_patch: str,
-        notdef_glyph_file: GlyphFile,
-        glyph_files: dict[int, GlyphFlavorGroup],
+        notdef_glyph_file: NamedGlyphFile,
+        cmap_context: CmapContext,
         language_flavor: LanguageFlavor,
 ) -> FontBuilder:
     builder = FontBuilder()
     builder.font_metric.font_size = font_config.font_size
     builder.font_metric.horizontal_layout.ascent = font_config.ascent
     builder.font_metric.horizontal_layout.descent = font_config.descent
-    builder.font_metric.vertical_layout.ascent = math.ceil(font_config.line_height / 2)
-    builder.font_metric.vertical_layout.descent = -math.floor(font_config.line_height / 2)
     builder.font_metric.x_height = font_config.x_height
     builder.font_metric.cap_height = font_config.cap_height
     builder.font_metric.underline_position = font_config.underline_position
@@ -73,26 +75,16 @@ def _create_builder(
     builder.meta_info.designer_url = 'https://takwolf.com'
     builder.meta_info.license_url = 'https://github.com/pixel-font-studio/fusion-poke-pixel-font/blob/master/LICENSE-OFL'
 
-    glyph_sequence = [notdef_glyph_file] + glyph_file_util.get_glyph_sequence(glyph_files, [language_flavor])
+    glyph_sequence = [notdef_glyph_file] + cmap_context.get_glyph_sequence(language_flavor)
     for glyph_file in glyph_sequence:
-        optimized_bitmap = glyph_file.optimized_bitmap
-        optimized_paddings = glyph_file.optimized_paddings
-
-        if optimized_bitmap.width == 0 or optimized_bitmap.height == 0:
-            horizontal_offset_x = 0
-            horizontal_offset_y = 0
-        else:
-            horizontal_offset_x = optimized_paddings.left
-            horizontal_offset_y = font_config.baseline - font_config.font_size - (glyph_file.height - font_config.font_size) // 2 + optimized_paddings.bottom
-
         builder.glyphs.append(Glyph(
             name=glyph_file.glyph_name,
-            horizontal_offset=(horizontal_offset_x, horizontal_offset_y),
-            advance_width=glyph_file.width,
-            bitmap=optimized_bitmap.data,
+            horizontal_offset=glyph_file.canvas.horizontal_offset_for_trimmed(font_config.font_size, font_config.baseline),
+            advance_width=glyph_file.canvas.advance_width(),
+            bitmap=glyph_file.canvas.trimmed_bitmap.data,
         ))
 
-    character_mapping = glyph_file_util.get_character_mapping(glyph_files, language_flavor)
+    character_mapping = cmap_context.get_character_mapping(language_flavor)
     builder.character_mapping.update(character_mapping)
 
     builder.opentype_config.px_to_units = 64
@@ -104,20 +96,31 @@ def _create_builder(
 def make_fonts(
         font_size: FontSize,
         family_name_patch: str,
-        notdef_glyph_file: GlyphFile,
-        contexts: dict[str, dict[int, GlyphFlavorGroup]],
+        notdef_glyph_file: NamedGlyphFile,
+        cmap_scope_contexts: Mapping[GlyphScope, CmapContext],
         include_narrow: bool,
 ) -> None:
     path_define.OUTPUTS_DIR.mkdir(parents=True, exist_ok=True)
 
     font_config = configs.FONT_CONFIGS[font_size]
 
-    glyph_files = contexts['common'] | contexts['proportional']
+    cmap_context = CmapContext().merge_by_code_point(
+        cmap_scope_contexts['common'],
+        cmap_scope_contexts['proportional'],
+        conflict='replace',
+    )
     if include_narrow:
-        glyph_files.update(contexts['narrow'])
+        cmap_context = cmap_context.merge_by_code_point(
+            cmap_scope_contexts['narrow'],
+            conflict='replace',
+        )
+    cmap_context = cmap_context.apply_mapping_by_flavor(
+        *configs.MAPPINGS,
+        conflict='replace',
+    )
 
     for language_flavor in options.LANGUAGE_FLAVORS:
-        builder = _create_builder(font_config, family_name_patch, notdef_glyph_file, glyph_files, language_flavor)
+        builder = _create_builder(font_config, family_name_patch, notdef_glyph_file, cmap_context, language_flavor)
 
         tt_font = builder.to_ttf_builder().font
         tb_head = tt_font['head']
