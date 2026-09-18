@@ -1,23 +1,31 @@
-from pixel_font_knife import glyph_file_util, glyph_mapping_util
-from pixel_font_knife.glyph_file_util import GlyphFile
+import sys
+
+from pixel_font_knife.cmap.context import CmapContext
+from pixel_font_knife.cmap.mapping.mapping import CmapMapping
+from pixel_font_knife.utils import fs_util
 
 from tools.configs import path_define, options
 from tools.configs.options import FontSize
 
 
-def format_glyphs(font_size: FontSize) -> None:
-    GlyphFile.load(path_define.PATCH_GLYPHS_DIR.joinpath(str(font_size), 'notdef.png')).save()
-
+def normalize_cmap_glyphs(font_size: FontSize) -> None:
     for glyphs_dir in (path_define.PATCH_GLYPHS_DIR, path_define.POKE_GLYPHS_DIR):
         for glyph_scope in options.GLYPH_SCOPES:
             glyph_scope_dir = glyphs_dir.joinpath(str(font_size), 'cmap', glyph_scope)
-            context = glyph_file_util.load_context(glyph_scope_dir)
-            glyph_file_util.normalize_context(context, glyph_scope_dir, options.LANGUAGE_FLAVORS)
+            context = CmapContext.load(glyph_scope_dir, allowed_flavors=options.LANGUAGE_FLAVORS)
+            context.normalize(glyph_scope_dir, flavor_order=options.LANGUAGE_FLAVORS)
+
+
+def format_glyphs() -> None:
+    if sys.platform != 'win32':
+        for glyphs_dir in (path_define.PATCH_GLYPHS_DIR, path_define.POKE_GLYPHS_DIR):
+            fs_util.format_glyph_files(glyphs_dir)
 
 
 def format_mappings() -> None:
     for file_path in path_define.CONFIGS_MAPPINGS_DIR.iterdir():
         if file_path.suffix != '.yaml':
             continue
-        mapping = glyph_mapping_util.load_mapping(file_path)
-        glyph_mapping_util.save_mapping(mapping, file_path, options.LANGUAGE_FLAVORS)
+
+        mapping = CmapMapping.load_yaml(file_path, allowed_flavors=options.LANGUAGE_FLAVORS)
+        mapping.save_yaml(file_path, flavor_order=options.LANGUAGE_FLAVORS)
