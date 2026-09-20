@@ -9,8 +9,8 @@ from tools.configs import path_define
 def make_release_zip() -> None:
     path_define.RELEASES_DIR.mkdir(parents=True, exist_ok=True)
 
-    file_path = path_define.RELEASES_DIR.joinpath(f'fusion-poke-pixel-font-v{configs.VERSION}.zip')
-    with ZipFile(file_path, 'w') as file:
+    zip_file_path = path_define.RELEASES_DIR.joinpath(f'fusion-poke-pixel-font-v{configs.VERSION}.zip')
+    with ZipFile(zip_file_path, 'w') as file:
         file.write(path_define.PROJECT_ROOT_DIR.joinpath('LICENSE-OFL'), 'OFL.txt')
 
         for font_name, file_names in sorted(configs.LICENSE_CONFIGS.items()):
@@ -21,4 +21,4 @@ def make_release_zip() -> None:
             if output_file_path.suffix != '.ttf':
                 continue
             file.write(output_file_path, output_file_path.name)
-    logger.info("Make release zip: '{}'", file_path)
+    logger.info("Make release zip: '{}'", zip_file_path)
