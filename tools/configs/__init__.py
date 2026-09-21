@@ -29,6 +29,10 @@ MAPPINGS = [
         path_define.CONFIGS_MAPPINGS_DIR.joinpath('2F00-2FDF Kangxi Radicals.yaml'),
         allowed_flavors=options.LANGUAGE_FLAVORS,
     ),
+    CmapMapping.load_yaml(
+        path_define.CONFIGS_MAPPINGS_DIR.joinpath('F900-FAFF CJK Compatibility Ideographs.yaml'),
+        allowed_flavors=options.LANGUAGE_FLAVORS,
+    ),
 ]
 
 LICENSE_CONFIGS = {
