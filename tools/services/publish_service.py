@@ -17,8 +17,8 @@ def make_release_zip() -> None:
             for file_name in file_names:
                 file.write(path_define.FONTS_DIR.joinpath(font_name, file_name), f'LICENSES/{font_name}/{file_name}')
 
-        for output_file_path in path_define.OUTPUTS_DIR.iterdir():
-            if output_file_path.suffix != '.ttf':
+        for font_file_path in sorted(path_define.OUTPUTS_DIR.glob('*.ttf')):
+            if not font_file_path.is_file():
                 continue
-            file.write(output_file_path, output_file_path.name)
+            file.write(font_file_path, font_file_path.name)
     logger.info("Make release zip: '{}'", zip_file_path)
