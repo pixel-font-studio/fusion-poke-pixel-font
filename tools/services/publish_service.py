@@ -3,13 +3,14 @@ from zipfile import ZipFile
 from loguru import logger
 
 from tools import configs
+from tools.config import project
 from tools.configs import path_define
 
 
 def make_release_zip() -> None:
     path_define.RELEASES_DIR.mkdir(parents=True, exist_ok=True)
 
-    zip_file_path = path_define.RELEASES_DIR.joinpath(f'fusion-poke-pixel-font-v{configs.VERSION}.zip')
+    zip_file_path = path_define.RELEASES_DIR.joinpath(f'{project.FILE_NAME_PREFIX}-font-v{project.VERSION}.zip')
     with ZipFile(zip_file_path, 'w') as file:
         file.write(path_define.PROJECT_ROOT_DIR.joinpath('LICENSE-OFL'), 'OFL.txt')
 

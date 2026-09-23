@@ -7,6 +7,7 @@ from pixel_font_knife.cmap.context import CmapContext
 from pixel_font_knife.named.file import NamedGlyphFile
 
 from tools import configs
+from tools.config import project
 from tools.configs import path_define, options, FontConfig
 from tools.configs.options import FontSize, GlyphScope, LanguageFlavor
 
@@ -58,22 +59,22 @@ def _create_builder(
     builder.font_metric.strikeout_position = font_config.strikeout_position
     builder.font_metric.strikeout_thickness = 1
 
-    builder.meta_info.version = configs.VERSION
-    builder.meta_info.created_time = datetime.fromisoformat(f'{configs.VERSION.replace('.', '-')}T00:00:00Z')
+    builder.meta_info.version = project.VERSION
+    builder.meta_info.created_time = datetime.fromisoformat(f'{project.VERSION.replace('.', '-')}T00:00:00Z')
     builder.meta_info.modified_time = builder.meta_info.created_time
-    builder.meta_info.family_name = f'Fusion Poke Pixel {family_name_patch} {configs.LANGUAGE_FLAVOR_TO_FONT_NAME[language_flavor]}'
+    builder.meta_info.family_name = f'{project.FAMILY_NAME_PREFIX} {family_name_patch} {configs.LANGUAGE_FLAVOR_TO_FONT_NAME[language_flavor]}'
     builder.meta_info.weight_name = WeightName.REGULAR
     builder.meta_info.serif_style = SerifStyle.SANS_SERIF
     builder.meta_info.slant_style = SlantStyle.NORMAL
     builder.meta_info.width_style = WidthStyle.PROPORTIONAL
-    builder.meta_info.manufacturer = 'TakWolf'
-    builder.meta_info.designer = 'TakWolf'
-    builder.meta_info.description = 'Open-source Pan-Latin and Pan-CJK pixel font in a sans-serif style'
-    builder.meta_info.copyright_info = 'Copyright (c) 2026, TakWolf (https://takwolf.com)'
-    builder.meta_info.license_info = 'This Font Software is licensed under the SIL Open Font License, Version 1.1'
-    builder.meta_info.vendor_url = 'https://github.com/pixel-font-studio/fusion-poke-pixel-font'
-    builder.meta_info.designer_url = 'https://takwolf.com'
-    builder.meta_info.license_url = 'https://github.com/pixel-font-studio/fusion-poke-pixel-font/blob/master/LICENSE-OFL'
+    builder.meta_info.manufacturer = project.MANUFACTURER
+    builder.meta_info.designer = project.DESIGNER
+    builder.meta_info.description = project.DESCRIPTION
+    builder.meta_info.copyright_info = project.COPYRIGHT_INFO
+    builder.meta_info.license_info = project.LICENSE_INFO
+    builder.meta_info.vendor_url = project.VENDOR_URL
+    builder.meta_info.designer_url = project.DESIGNER_URL
+    builder.meta_info.license_url = project.LICENSE_URL
 
     glyph_sequence = [notdef_glyph_file] + cmap_context.get_glyph_sequence(language_flavor)
     for glyph_file in glyph_sequence:
@@ -147,6 +148,6 @@ def make_fonts(
             tb_os2.usWinAscent = 703
             tb_os2.usWinDescent = 88
 
-        file_path = path_define.OUTPUTS_DIR.joinpath(f'fusion-poke-pixel-{family_name_patch.lower()}-{language_flavor}.ttf')
+        file_path = path_define.OUTPUTS_DIR.joinpath(f'{project.FILE_NAME_PREFIX}-{family_name_patch.lower()}-{language_flavor}.ttf')
         tt_font.save(file_path)
         logger.info("Make font: '{}'", file_path)
