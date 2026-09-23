@@ -7,8 +7,8 @@ from pixel_font_knife.cmap.context import CmapContext
 from pixel_font_knife.named.file import NamedGlyphFile
 
 from tools import configs
-from tools.config import project
-from tools.configs import path_define, options, FontConfig
+from tools.config import project, path_define
+from tools.configs import options, FontConfig
 from tools.configs.options import FontSize, GlyphScope, LanguageFlavor
 
 

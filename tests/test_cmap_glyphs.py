@@ -6,7 +6,8 @@ import unicodedata2
 import unidata_blocks
 from pixel_font_knife.cmap.context import CmapContext
 
-from tools.configs import FontConfig, path_define, options
+from tools.config import path_define
+from tools.configs import FontConfig, options
 from tools.configs.options import FontSize, GlyphScope
 
 

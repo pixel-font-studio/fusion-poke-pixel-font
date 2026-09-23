@@ -1,6 +1,6 @@
 import shutil
 
-from tools.configs import path_define
+from tools.config import path_define
 from tools.services import setup_service, dump_service, font_service, publish_service
 
 

@@ -3,8 +3,7 @@ from zipfile import ZipFile
 from loguru import logger
 
 from tools import configs
-from tools.config import project
-from tools.configs import path_define
+from tools.config import project, path_define
 
 
 def make_release_zip() -> None:
