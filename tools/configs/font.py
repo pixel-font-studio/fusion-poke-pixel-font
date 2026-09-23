@@ -9,7 +9,7 @@ class FontConfig:
     def load(font_size: FontSize) -> FontConfig:
         data = yaml.safe_load(path_define.CONFIGS_FONTS_DIR.joinpath(f'font-{font_size}px.yaml').read_bytes())
         assert font_size == data['font-size']
-        canvas_size = data['canvas-size']
+        canvas_height = data['canvas-height']
         baseline = data['baseline']
         ascent = data['ascent']
         descent = data['descent']
@@ -19,7 +19,7 @@ class FontConfig:
         strikeout_position = data['strikeout-position']
         return FontConfig(
             font_size,
-            canvas_size,
+            canvas_height,
             baseline,
             ascent,
             descent,
@@ -30,7 +30,7 @@ class FontConfig:
         )
 
     font_size: FontSize
-    canvas_size: int
+    canvas_height: int
     baseline: int
     ascent: int
     descent: int
@@ -42,7 +42,7 @@ class FontConfig:
     def __init__(
             self,
             font_size: FontSize,
-            canvas_size: int,
+            canvas_height: int,
             baseline: int,
             ascent: int,
             descent: int,
@@ -52,7 +52,7 @@ class FontConfig:
             strikeout_position: int,
     ) -> None:
         self.font_size = font_size
-        self.canvas_size = canvas_size
+        self.canvas_height = canvas_height
         self.baseline = baseline
         self.ascent = ascent
         self.descent = descent
