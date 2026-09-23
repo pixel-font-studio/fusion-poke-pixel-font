@@ -1,7 +1,6 @@
 from pixel_font_knife.cmap.mapping.mapping import CmapMapping
 
-from tools.config import path_define
-from tools.configs import options
+from tools.config import path_define, options
 from tools.configs.dump import DumpConfig
 from tools.configs.fallback import FallbackConfig
 from tools.configs.font import FontConfig
@@ -33,28 +32,3 @@ MAPPINGS = [
         allowed_flavors=options.LANGUAGE_FLAVORS,
     ),
 ]
-
-LICENSE_CONFIGS = {
-    'ark-pixel': [
-        'OFL.txt',
-    ],
-    'boutique-bitmap-9x9': [
-        'OFL.txt',
-    ],
-    'cubic-11': [
-        'OFL.txt',
-    ],
-    'galmuri': [
-        'LICENSE.txt',
-    ],
-}
-
-LANGUAGE_FLAVOR_TO_FONT_NAME = {
-    'latin': 'latin',
-    'zh_hans': 'zh-Hans',
-    'zh_hant': 'zh-Hant',
-    'zh_hk': 'zh-HK',
-    'zh_tw': 'zh-TW',
-    'ja': 'ja',
-    'ko': 'ko',
-}

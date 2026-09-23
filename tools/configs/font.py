@@ -1,7 +1,7 @@
 import yaml
 
 from tools.config import path_define
-from tools.configs.options import FontSize
+from tools.config.options import FontSize
 
 
 class FontConfig:

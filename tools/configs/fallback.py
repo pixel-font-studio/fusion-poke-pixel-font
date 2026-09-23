@@ -1,7 +1,7 @@
 import yaml
 
 from tools.config import path_define
-from tools.configs.options import FontSize, GlyphScope, LanguageFlavor
+from tools.config.options import FontSize, GlyphScope, LanguageFlavor
 
 
 class FallbackConfig:

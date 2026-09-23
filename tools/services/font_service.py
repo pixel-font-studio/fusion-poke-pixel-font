@@ -7,9 +7,9 @@ from pixel_font_knife.cmap.context import CmapContext
 from pixel_font_knife.named.file import NamedGlyphFile
 
 from tools import configs
-from tools.config import project, path_define
-from tools.configs import options, FontConfig
-from tools.configs.options import FontSize, GlyphScope, LanguageFlavor
+from tools.config import path_define, project, manifest, options
+from tools.config.options import FontSize, GlyphScope, LanguageFlavor
+from tools.configs import FontConfig
 
 
 def load_contexts(font_size: FontSize) -> tuple[NamedGlyphFile, Mapping[GlyphScope, CmapContext]]:
@@ -62,7 +62,7 @@ def _create_builder(
     builder.meta_info.version = project.VERSION
     builder.meta_info.created_time = datetime.fromisoformat(f'{project.VERSION.replace('.', '-')}T00:00:00Z')
     builder.meta_info.modified_time = builder.meta_info.created_time
-    builder.meta_info.family_name = f'{project.FAMILY_NAME_PREFIX} {family_name_patch} {configs.LANGUAGE_FLAVOR_TO_FONT_NAME[language_flavor]}'
+    builder.meta_info.family_name = f'{project.FAMILY_NAME_PREFIX} {family_name_patch} {manifest.LANGUAGE_FLAVOR_TO_FONT_NAME[language_flavor]}'
     builder.meta_info.weight_name = WeightName.REGULAR
     builder.meta_info.serif_style = SerifStyle.SANS_SERIF
     builder.meta_info.slant_style = SlantStyle.NORMAL

@@ -5,8 +5,8 @@ from pathlib import Path
 import pytest
 from pixel_font_knife.cmap.context import CmapContext
 
-from tools.configs import options
-from tools.configs.options import FontSize, GlyphScope
+from tools.config import options
+from tools.config.options import FontSize, GlyphScope
 
 
 @pytest.fixture(scope='session')
