@@ -133,6 +133,7 @@ SMALL_FONT_SIZE = ceil(11 * 2 / 0.9) = 25
 - [HTTPX](https://github.com/encode/httpx)
 - [tqdm](https://github.com/tqdm/tqdm)
 - [Loguru](https://github.com/Delgan/loguru)
+- [pytest](https://github.com/pytest-dev/pytest)
 
 ## 许可证
 
