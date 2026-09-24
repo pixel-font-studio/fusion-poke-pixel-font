@@ -5,7 +5,9 @@ from pixel_font_knife.cmap.mapping.mapping import CmapMapping
 from tools.config import path_define, manifest, options
 from tools.config.dump import DumpConfig
 from tools.config.fallback import FallbackConfig
-from tools.services import setup_service, dump_service, font_service, publish_service
+from tools.extra import publish_service
+from tools.font import font_service
+from tools.resource import setup_service, dump_service
 
 
 def main() -> None:
