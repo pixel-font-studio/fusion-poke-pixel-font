@@ -1,15 +1,15 @@
-from collections.abc import Mapping
+from collections.abc import Mapping, Sequence
 from datetime import datetime
 
 from loguru import logger
 from pixel_font_builder import FontBuilder, WeightName, SerifStyle, SlantStyle, WidthStyle, Glyph
 from pixel_font_knife.cmap.context import CmapContext
+from pixel_font_knife.cmap.mapping.mapping import CmapMapping
 from pixel_font_knife.named.file import NamedGlyphFile
 
-from tools import configs
 from tools.config import path_define, project, manifest, options
+from tools.config.font import FontConfig
 from tools.config.options import FontSize, GlyphScope, LanguageFlavor
-from tools.configs import FontConfig
 
 
 def load_contexts(font_size: FontSize) -> tuple[NamedGlyphFile, Mapping[GlyphScope, CmapContext]]:
@@ -99,11 +99,12 @@ def make_fonts(
         family_name_patch: str,
         notdef_glyph_file: NamedGlyphFile,
         cmap_scope_contexts: Mapping[GlyphScope, CmapContext],
+        mappings: Sequence[CmapMapping],
         include_narrow: bool,
 ) -> None:
     path_define.OUTPUTS_DIR.mkdir(parents=True, exist_ok=True)
 
-    font_config = configs.FONT_CONFIGS[font_size]
+    font_config = FontConfig.load(font_size)
 
     cmap_context = CmapContext().merge_by_code_point(
         cmap_scope_contexts['common'],
@@ -116,7 +117,7 @@ def make_fonts(
             conflict='replace',
         )
     cmap_context = cmap_context.apply_mapping_by_flavor(
-        *configs.MAPPINGS,
+        *mappings,
         conflict='replace',
     )
 

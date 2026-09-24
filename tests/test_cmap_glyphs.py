@@ -7,8 +7,8 @@ import unidata_blocks
 from pixel_font_knife.cmap.context import CmapContext
 
 from tools.config import path_define, options
+from tools.config.font import FontConfig
 from tools.config.options import FontSize, GlyphScope
-from tools.configs import FontConfig
 
 
 @pytest.mark.parametrize('glyphs_dir', [path_define.PATCH_GLYPHS_DIR, path_define.POKE_GLYPHS_DIR])

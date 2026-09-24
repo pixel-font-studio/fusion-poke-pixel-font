@@ -1,4 +1,5 @@
 import math
+from collections.abc import Sequence
 
 import unidata_blocks
 from PIL import ImageFont, Image, ImageDraw
@@ -6,12 +7,14 @@ from fontTools.ttLib import TTFont
 from loguru import logger
 from pixel_font_knife.bitmap.mono_bitmap import MonoBitmap
 
-from tools import configs
 from tools.config import path_define, options
+from tools.config.dump import DumpConfig
+from tools.config.fallback import FallbackConfig
+from tools.config.font import FontConfig
 
 
-def dump_fonts() -> None:
-    for dump_config in configs.DUMP_CONFIGS:
+def dump_fonts(dump_configs: Sequence[DumpConfig]) -> None:
+    for dump_config in dump_configs:
         dump_dir = path_define.DUMP_DIR.joinpath(str(dump_config.font_size), dump_config.dump_dir_name)
         logger.info("Dump glyphs: '{}'", dump_dir)
 
@@ -46,9 +49,9 @@ def dump_fonts() -> None:
             image.save(glyph_file_path)
 
 
-def apply_fallbacks() -> None:
+def apply_fallbacks(fallback_configs: Sequence[FallbackConfig]) -> None:
     contexts = {}
-    for fallback_config in configs.FALLBACK_CONFIGS:
+    for fallback_config in fallback_configs:
         dir_from = path_define.DUMP_DIR.joinpath(str(fallback_config.font_size), fallback_config.dir_from)
         assert dir_from.is_dir(), f"dump dir not exist: '{dir_from}'"
         logger.info("Fallback glyphs: '{}' '{}' '{}'", fallback_config.glyph_scope, fallback_config.flavors, dir_from)
@@ -60,7 +63,7 @@ def apply_fallbacks() -> None:
             context = {}
             contexts[context_key] = context
 
-        font_config = configs.FONT_CONFIGS[fallback_config.font_size]
+        font_config = FontConfig.load(fallback_config.font_size)
         if fallback_config.glyph_scope == 'proportional':
             canvas_height = font_config.canvas_height
         else:
