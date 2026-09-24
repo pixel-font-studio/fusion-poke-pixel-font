@@ -151,4 +151,4 @@ def make_fonts(
 
         file_path = path_define.OUTPUTS_DIR.joinpath(f'{project.FILE_NAME_PREFIX}-{family_name_patch.lower()}-{language_flavor}.ttf')
         tt_font.save(file_path)
-        logger.info("Make font: '{}'", file_path)
+        logger.info('Make font: {!r}', str(file_path))

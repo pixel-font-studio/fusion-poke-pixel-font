@@ -20,4 +20,4 @@ def make_release_zip() -> None:
             if not font_file_path.is_file():
                 continue
             file.write(font_file_path, font_file_path.name)
-    logger.info("Make release zip: '{}'", zip_file_path)
+    logger.info('Make release zip: {!r}', str(zip_file_path))
