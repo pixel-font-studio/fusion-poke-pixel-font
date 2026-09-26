@@ -52,7 +52,7 @@ def test_duplicate_glyph_bitmap(
 
 @pytest.mark.parametrize('glyphs_dir', [path_define.PATCH_GLYPHS_DIR, path_define.POKE_GLYPHS_DIR])
 @pytest.mark.parametrize('font_size', options.FONT_SIZES)
-def test_top_right_padding(
+def test_top_and_right_padding(
         load_cmap_context: Callable[[Path, FontSize, GlyphScope], CmapContext],
         glyphs_dir: Path,
         font_size: FontSize,
