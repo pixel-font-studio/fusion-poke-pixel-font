@@ -80,9 +80,9 @@ def _create_builder(
     for glyph_file in glyph_sequence:
         builder.glyphs.append(Glyph(
             name=glyph_file.glyph_name,
-            horizontal_offset=glyph_file.canvas.horizontal_offset_for_trimmed(font_config.font_size, font_config.baseline),
-            advance_width=glyph_file.canvas.advance_width(),
-            bitmap=glyph_file.canvas.trimmed_bitmap.data,
+            horizontal_offset=glyph_file.suggest_horizontal_offset(font_config.font_size, font_config.baseline),
+            advance_width=glyph_file.suggest_advance_width(),
+            bitmap=glyph_file.suggest_bitmap(),
         ))
 
     character_mapping = cmap_context.get_character_mapping(language_flavor)
