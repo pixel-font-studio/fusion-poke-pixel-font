@@ -10,7 +10,7 @@ dependencies = [
     "unicodedata2==18.0.0",
     "unidata-blocks==0.0.28",
     "pyyaml==6.0.3",
-    "pillow==12.3.0",
+    "pillow==13.0.0",
     "httpx[http2]==0.28.1",
     "tqdm==4.70.1",
     "loguru==0.7.3",
