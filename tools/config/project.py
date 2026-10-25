@@ -1,5 +1,5 @@
 
-VERSION = '2026.10.16'
+VERSION = '2026.10.25'
 
 DESCRIPTION = 'Open-source Pan-Latin and Pan-CJK pixel font in a sans-serif style'
 
