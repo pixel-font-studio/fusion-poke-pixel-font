@@ -6,13 +6,13 @@ import unicodedata2
 import unidata_blocks
 from pixel_font_knife.cmap.context import CmapContext
 
-from tools.config import path_define, options
+from tools.config import paths, options
 from tools.config.font import FontConfig
 from tools.config.glyph.bitmap import GlyphBitmapRules
 from tools.config.options import FontSize, GlyphScope
 
 
-@pytest.mark.parametrize('glyphs_dir', [path_define.PATCH_GLYPHS_DIR, path_define.POKE_GLYPHS_DIR])
+@pytest.mark.parametrize('glyphs_dir', [paths.PATCH_GLYPHS_DIR, paths.POKE_GLYPHS_DIR])
 @pytest.mark.parametrize('font_size', options.FONT_SIZES)
 @pytest.mark.parametrize('glyph_scope', options.GLYPH_SCOPES)
 def test_default_flavor(
@@ -32,7 +32,7 @@ def test_default_flavor(
         assert None in glyph_variants, f'[{font_size}px] missing default flavor: {glyph_scope} {code_point:04X}'
 
 
-@pytest.mark.parametrize('glyphs_dir', [path_define.PATCH_GLYPHS_DIR, path_define.POKE_GLYPHS_DIR])
+@pytest.mark.parametrize('glyphs_dir', [paths.PATCH_GLYPHS_DIR, paths.POKE_GLYPHS_DIR])
 @pytest.mark.parametrize('font_size', options.FONT_SIZES)
 @pytest.mark.parametrize('glyph_scope', options.GLYPH_SCOPES)
 def test_duplicate_glyph_bitmap(
@@ -51,7 +51,7 @@ def test_duplicate_glyph_bitmap(
             bitmap_strings[bitmap_string] = glyph_file
 
 
-@pytest.mark.parametrize('glyphs_dir', [path_define.PATCH_GLYPHS_DIR, path_define.POKE_GLYPHS_DIR])
+@pytest.mark.parametrize('glyphs_dir', [paths.PATCH_GLYPHS_DIR, paths.POKE_GLYPHS_DIR])
 @pytest.mark.parametrize('font_size', options.FONT_SIZES)
 def test_top_and_right_padding(
         load_cmap_context: Callable[[Path, FontSize, GlyphScope], CmapContext],
@@ -79,7 +79,7 @@ def test_top_and_right_padding(
                 assert glyph_file.canvas.is_blank or glyph_file.canvas.trimmed_padding.right >= 1, f'[{font_size}px] glyph has no 1px right padding: {str(glyph_file.file_path)!r}'
 
 
-@pytest.mark.parametrize('glyphs_dir', [path_define.PATCH_GLYPHS_DIR, path_define.POKE_GLYPHS_DIR])
+@pytest.mark.parametrize('glyphs_dir', [paths.PATCH_GLYPHS_DIR, paths.POKE_GLYPHS_DIR])
 @pytest.mark.parametrize('font_size', options.FONT_SIZES)
 @pytest.mark.parametrize('glyph_scope', options.GLYPH_SCOPES)
 def test_glyph_bitmap_dimensions(
@@ -110,7 +110,7 @@ def test_glyph_bitmap_dimensions(
                     case 'F' | 'W':  # Fullwidth or Wide
                         assert glyph_file.canvas.width == font_size, f'[{font_size}px] glyph bitmap dimensions error: {str(glyph_file.file_path)!r}'
                     case _:  # Ambiguous (A) or Neutral (N)
-                        if glyphs_dir != path_define.POKE_GLYPHS_DIR or code_point not in (
+                        if glyphs_dir != paths.POKE_GLYPHS_DIR or code_point not in (
                                 0x2640, 0x2642,
                         ):
                             assert glyph_file.canvas.width % (font_size / 2) == 0, f'[{font_size}px] glyph bitmap dimensions error: {str(glyph_file.file_path)!r}'

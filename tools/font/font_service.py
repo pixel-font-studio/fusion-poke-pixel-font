@@ -7,30 +7,30 @@ from pixel_font_knife.cmap.context import CmapContext
 from pixel_font_knife.cmap.mapping.mapping import CmapMapping
 from pixel_font_knife.named.file import NamedGlyphFile
 
-from tools.config import path_define, project, manifest, options
+from tools.config import paths, project, manifest, options
 from tools.config.font import FontConfig
 from tools.config.options import FontSize, GlyphScope, LanguageFlavor
 
 
 def load_contexts(font_size: FontSize) -> tuple[NamedGlyphFile, Mapping[GlyphScope, CmapContext]]:
-    notdef_glyph_file = NamedGlyphFile.load_notdef(path_define.PATCH_GLYPHS_DIR.joinpath(str(font_size), 'notdef.png'))
+    notdef_glyph_file = NamedGlyphFile.load_notdef(paths.PATCH_GLYPHS_DIR.joinpath(str(font_size), 'notdef.png'))
 
     cmap_scope_contexts = {
         glyph_scope: CmapContext().merge_by_code_point(
             CmapContext.load(
-                path_define.FALLBACK_GLYPHS_DIR.joinpath(str(font_size), 'cmap', glyph_scope),
+                paths.FALLBACK_GLYPHS_DIR.joinpath(str(font_size), 'cmap', glyph_scope),
                 allowed_flavors=options.LANGUAGE_FLAVORS,
             ).with_default_flavor(options.LANGUAGE_FLAVORS),
             CmapContext.load(
-                path_define.ARK_PIXEL_GLYPHS_DIR.joinpath(str(font_size), 'cmap', glyph_scope),
+                paths.ARK_PIXEL_GLYPHS_DIR.joinpath(str(font_size), 'cmap', glyph_scope),
                 allowed_flavors=options.LANGUAGE_FLAVORS,
             ),
             CmapContext.load(
-                path_define.PATCH_GLYPHS_DIR.joinpath(str(font_size), 'cmap', glyph_scope),
+                paths.PATCH_GLYPHS_DIR.joinpath(str(font_size), 'cmap', glyph_scope),
                 allowed_flavors=options.LANGUAGE_FLAVORS,
             ),
             CmapContext.load(
-                path_define.POKE_GLYPHS_DIR.joinpath(str(font_size), 'cmap', glyph_scope),
+                paths.POKE_GLYPHS_DIR.joinpath(str(font_size), 'cmap', glyph_scope),
                 allowed_flavors=options.LANGUAGE_FLAVORS,
             ),
             conflict='replace',
@@ -102,7 +102,7 @@ def make_fonts(
         mappings: Sequence[CmapMapping],
         include_narrow: bool,
 ) -> None:
-    path_define.OUTPUTS_DIR.mkdir(parents=True, exist_ok=True)
+    paths.OUTPUTS_DIR.mkdir(parents=True, exist_ok=True)
 
     font_config = FontConfig.load(font_size)
 
@@ -149,6 +149,6 @@ def make_fonts(
             tb_os2.usWinAscent = 703
             tb_os2.usWinDescent = 88
 
-        file_path = path_define.OUTPUTS_DIR.joinpath(f'{project.FILE_NAME_PREFIX}-{family_name_patch.lower()}-{language_flavor}.ttf')
+        file_path = paths.OUTPUTS_DIR.joinpath(f'{project.FILE_NAME_PREFIX}-{family_name_patch.lower()}-{language_flavor}.ttf')
         tt_font.save(file_path)
         logger.info('Make font: {!r}', str(file_path))

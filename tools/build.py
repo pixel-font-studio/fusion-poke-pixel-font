@@ -2,7 +2,7 @@ import shutil
 
 from pixel_font_knife.cmap.mapping.mapping import CmapMapping
 
-from tools.config import path_define, manifest, options
+from tools.config import paths, manifest, options
 from tools.config.dump import DumpConfig
 from tools.config.fallback import FallbackConfig
 from tools.extra import publish_service
@@ -11,8 +11,8 @@ from tools.resource import setup_service, dump_service
 
 
 def main() -> None:
-    if path_define.BUILD_DIR.exists():
-        shutil.rmtree(path_define.BUILD_DIR)
+    if paths.BUILD_DIR.exists():
+        shutil.rmtree(paths.BUILD_DIR)
 
     setup_service.setup_ark_pixel()
 
