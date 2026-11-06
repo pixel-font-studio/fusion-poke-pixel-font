@@ -1,0 +1,38 @@
+
+cmap:
+  padding:
+    allow-no-top-and-right:
+      file-ids:
+        # Latin Extended-B
+        - poke-glyphs/proportional/0x022C  # Ȭ
+    allow-no-top-only:
+      file-ids:
+        # Latin Extended-B
+        - poke-glyphs/proportional/0x01D7  # Ǘ
+        - poke-glyphs/proportional/0x01D9  # Ǚ
+        - poke-glyphs/proportional/0x01DB  # Ǜ
+        - poke-glyphs/proportional/0x01FA  # Ǻ
+    allow-no-right-only:
+      file-ids:
+        # Latin-1 Supplement
+        - poke-glyphs/proportional/0x00C3  # Ã
+        - poke-glyphs/proportional/0x00D1  # Ñ
+        - poke-glyphs/proportional/0x00D5  # Õ
+        - poke-glyphs/proportional/0x00E3  # ã
+        - poke-glyphs/proportional/0x00F1  # ñ
+        - poke-glyphs/proportional/0x00F5  # õ
+        # Latin Extended-A
+        - poke-glyphs/proportional/0x0128  # Ĩ
+        - poke-glyphs/proportional/0x0129  # ĩ
+        - poke-glyphs/proportional/0x012C  # Ĭ
+        - poke-glyphs/proportional/0x012D  # ĭ
+        - poke-glyphs/proportional/0x0168  # Ũ
+        - poke-glyphs/proportional/0x0169  # ũ
+        # Latin Extended-B
+        - poke-glyphs/proportional/0x0208  # Ȉ
+        - poke-glyphs/proportional/0x0209  # ȉ
+        - poke-glyphs/proportional/0x020A  # Ȋ
+        - poke-glyphs/proportional/0x020B  # ȋ
+        - poke-glyphs/proportional/0x0211  # ȑ
+        - poke-glyphs/proportional/0x0213  # ȓ
+        - poke-glyphs/proportional/0x022D  # ȭ

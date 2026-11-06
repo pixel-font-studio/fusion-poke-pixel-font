@@ -18,3 +18,18 @@ class CmapSelector:
     ) -> None:
         self.blocks = blocks
         self.code_points = code_points
+
+
+class FileIdSelector:
+    @staticmethod
+    def parse(data: Any) -> FileIdSelector:
+        file_ids = set(data.get('file-ids', ()))
+        return FileIdSelector(file_ids)
+
+    file_ids: set[str]
+
+    def __init__(
+            self,
+            file_ids: set[str],
+    ) -> None:
+        self.file_ids = file_ids

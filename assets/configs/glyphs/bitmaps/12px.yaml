@@ -1,0 +1,52 @@
+
+cmap:
+  padding:
+    allow-no-top-and-right:
+      file-ids:
+        # Latin Extended-B
+        - poke-glyphs/narrow/0x022C  # Ȭ
+    allow-no-top-only:
+      file-ids:
+        # Latin Extended-B
+        - poke-glyphs/proportional/0x01D7  # Ǘ
+        - poke-glyphs/proportional/0x01D9  # Ǚ
+        - poke-glyphs/proportional/0x01DB  # Ǜ
+        - poke-glyphs/proportional/0x01FA  # Ǻ
+        - poke-glyphs/proportional/0x022C  # Ȭ
+        # Latin Extended-B
+        - poke-glyphs/narrow/0x01D7  # Ǘ
+        - poke-glyphs/narrow/0x01D9  # Ǚ
+        - poke-glyphs/narrow/0x01DB  # Ǜ
+        - poke-glyphs/narrow/0x01FA  # Ǻ
+    allow-no-right-only:
+      file-ids:
+        # Latin Extended-A
+        - poke-glyphs/proportional/0x0128  # Ĩ
+        - poke-glyphs/proportional/0x0129  # ĩ
+        - poke-glyphs/proportional/0x012C  # Ĭ
+        - poke-glyphs/proportional/0x012D  # ĭ
+        # Latin Extended-B
+        - poke-glyphs/proportional/0x0208  # Ȉ
+        - poke-glyphs/proportional/0x0209  # ȉ
+        - poke-glyphs/proportional/0x020A  # Ȋ
+        - poke-glyphs/proportional/0x020B  # ȋ
+        # Latin-1 Supplement
+        - poke-glyphs/narrow/0x00C3  # Ã
+        - poke-glyphs/narrow/0x00D1  # Ñ
+        - poke-glyphs/narrow/0x00D5  # Õ
+        - poke-glyphs/narrow/0x00E3  # ã
+        - poke-glyphs/narrow/0x00F1  # ñ
+        - poke-glyphs/narrow/0x00F5  # õ
+        # Latin Extended-A
+        - poke-glyphs/narrow/0x0128  # Ĩ
+        - poke-glyphs/narrow/0x0129  # ĩ
+        - poke-glyphs/narrow/0x012C  # Ĭ
+        - poke-glyphs/narrow/0x012D  # ĭ
+        - poke-glyphs/narrow/0x0168  # Ũ
+        - poke-glyphs/narrow/0x0169  # ũ
+        # Latin Extended-B
+        - poke-glyphs/narrow/0x0208  # Ȉ
+        - poke-glyphs/narrow/0x0209  # ȉ
+        - poke-glyphs/narrow/0x020A  # Ȋ
+        - poke-glyphs/narrow/0x020B  # ȋ
+        - poke-glyphs/narrow/0x022D  # ȭ
