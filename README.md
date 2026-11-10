@@ -13,21 +13,21 @@
 由于衍生自「Fusion Pixel Font」字体，因此字体名中带有「Fusion」单词。这只是一个巧合，和游戏名中的「Fusion」没有直接关系。
 
 > [!WARNING]
-> 
+>
 > 本项目不是 [Pokémon Infinite Fusion](https://discord.gg/infinitefusion) 的官方项目。
-> 
+>
 > 本项目仅接受字体相关的问题反馈。有关游戏相关的问题反馈，请在 [游戏官方社区](https://discord.gg/infinitefusion) 进行提交。
 
 > [!WARNING]
-> 
+>
 > 本项目与「宝可梦」官方无任何关系。
-> 
+>
 > 字体全部字形均来自于设计师原创，或衍生自其它开源字体。
-> 
+>
 > 本仓库中亦不包含任何「宝可梦」著作权相关的素材。
 
 > [!WARNING]
-> 
+>
 > 为了适配 [mkxp-z](https://github.com/mkxp-z/mkxp-z) 字体渲染相关的一些特殊行为，本字体参数做了一些特殊处理，所以可能无法正常用于普通项目。
 
 ## 字体变种
@@ -66,7 +66,7 @@
 
 ```ruby
 module MessageConfig
-    
+
     # Other configs...
 
     FONT_NAME               = "Fusion Poke Pixel Normal zh_hans"
