@@ -1,4 +1,6 @@
+import re
 from collections.abc import Callable
+from itertools import chain
 from pathlib import Path
 
 import pytest
@@ -93,6 +95,47 @@ def test_top_and_right_padding(
                     file_id not in padding_size_rules.allow_no_right_only.file_ids
             ):
                 assert glyph_file.canvas.is_blank or glyph_file.canvas.trimmed_padding.right >= 1, f'[{font_size}px] glyph has no 1px right padding: {str(glyph_file.file_path)!r}'
+
+
+@pytest.mark.parametrize('font_size', options.FONT_SIZES)
+def test_padding_size_rules(
+        load_cmap_context: Callable[[Path, FontSize, GlyphScope], CmapContext],
+        load_bitmap_size_rules: Callable[[FontSize], BitmapSizeRules],
+        font_size: FontSize,
+) -> None:
+    contexts = {
+        (glyphs_dir.name, glyph_scope): load_cmap_context(glyphs_dir, font_size, glyph_scope)
+        for glyphs_dir in (paths.PATCH_GLYPHS_DIR, paths.POKE_GLYPHS_DIR)
+        for glyph_scope in options.GLYPH_SCOPES
+    }
+    padding_size_rules = load_bitmap_size_rules(font_size).cmap_size_rules.padding_size_rules
+    file_id_regex = re.compile(r'[/\s,]')
+
+    for file_id in chain(padding_size_rules.allow_no_top_and_right.file_ids, padding_size_rules.allow_no_top_only.file_ids):
+        parts = file_id_regex.split(file_id)
+        glyphs_dir = parts[0]
+        glyph_scope = parts[1]
+        code_point = int(parts[2].removeprefix('0x'), 16)
+        flavors = parts[3:]
+        flavor = flavors[0] if flavors else None
+        glyph_file = contexts[glyphs_dir, glyph_scope][code_point].get(flavor, None)
+
+        assert glyph_file is not None, f'[{font_size}px] invalid file-id in padding size rules: {file_id!r}, referenced glyph variant does not exist'
+        assert glyph_file.flavors == flavors, f'[{font_size}px] incorrect flavors in padding size rules: {file_id!r}, expected {glyph_file.flavors!r}, got {flavors!r}'
+        assert not glyph_file.canvas.is_blank and glyph_file.canvas.trimmed_padding.top == 0, f'[{font_size}px] unnecessary top padding exception in size rules: {file_id!r} ({str(glyph_file.file_path)!r})'
+
+    for file_id in chain(padding_size_rules.allow_no_top_and_right.file_ids, padding_size_rules.allow_no_right_only.file_ids):
+        parts = file_id_regex.split(file_id)
+        glyphs_dir = parts[0]
+        glyph_scope = parts[1]
+        code_point = int(parts[2].removeprefix('0x'), 16)
+        flavors = parts[3:]
+        flavor = flavors[0] if flavors else None
+        glyph_file = contexts[glyphs_dir, glyph_scope][code_point].get(flavor, None)
+
+        assert glyph_file is not None, f'[{font_size}px] invalid file-id in padding size rules: {file_id!r}, referenced glyph variant does not exist'
+        assert glyph_file.flavors == flavors, f'[{font_size}px] incorrect flavors in padding size rules: {file_id!r}, expected {glyph_file.flavors!r}, got {flavors!r}'
+        assert not glyph_file.canvas.is_blank and glyph_file.canvas.trimmed_padding.right == 0, f'[{font_size}px] unnecessary right padding exception in size rules: {file_id!r} ({str(glyph_file.file_path)!r})'
 
 
 @pytest.mark.parametrize('glyphs_dir', [paths.PATCH_GLYPHS_DIR, paths.POKE_GLYPHS_DIR])
