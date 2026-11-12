@@ -13,7 +13,7 @@ dependencies = [
     "pillow==13.0.0",
     "httpx[http2]==0.28.1",
     "tqdm==4.70.1",
-    "loguru==0.7.3",
+    "loguru==0.8.0",
 ]
 
 [dependency-groups]
