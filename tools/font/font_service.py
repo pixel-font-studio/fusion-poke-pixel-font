@@ -2,7 +2,7 @@ from collections.abc import Mapping, Sequence
 from datetime import datetime
 
 from loguru import logger
-from pixel_font_builder import FontBuilder, WeightName, SerifStyle, SlantStyle, WidthStyle, Glyph
+from pixel_font_builder import FontBuilder, WeightName, SerifStyle, SlantStyle, WidthStyle, Glyph, MonoRaster
 from pixel_font_knife.cmap.context import CmapContext
 from pixel_font_knife.cmap.mapping.mapping import CmapMapping
 from pixel_font_knife.named.file import NamedGlyphFile
@@ -80,9 +80,11 @@ def _create_builder(
     for glyph_file in glyph_sequence:
         builder.glyphs.append(Glyph(
             name=glyph_file.glyph_name,
-            horizontal_offset=glyph_file.suggest_horizontal_offset(font_config.font_size, font_config.baseline),
             advance_width=glyph_file.suggest_advance_width(),
-            bitmap=glyph_file.suggest_bitmap(),
+            mono_raster=MonoRaster(
+                horizontal_offset=glyph_file.suggest_horizontal_offset(font_config.font_size, font_config.baseline),
+                bitmap=glyph_file.suggest_bitmap(),
+            ),
         ))
 
     character_mapping = cmap_context.get_character_mapping(language_flavor)
